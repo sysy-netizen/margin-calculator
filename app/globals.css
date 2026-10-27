@@ -1,0 +1,517 @@
+/* excel_merge/app.py 의 인라인 CSS를 순수 HTML/CSS 구조에 맞게 이식한 스타일시트.
+   codivostudio-web(Astro)이 이 앱을 리버스프록시로 감싸서 /tools/excel-converter/
+   에서 보여주므로, 공통 페이지 제목 스타일은 여기 두지 않습니다 (ProgramLayout이
+   쓰던 제목/설명은 이제 없음). 다만 사이트 전체 도구 탭 내비(ProgramNav)는
+   Astro 쪽이 렌더링하지 않으므로 이 앱이 직접 내장합니다 (.cs-program-nav). */
+
+* {
+  box-sizing: border-box;
+}
+
+/* ── 도구 탭 내비 (codivostudio-web의 ProgramNav.astro와 동일한 값) ────── */
+.cs-program-nav {
+  margin: 0 0 1.5rem;
+  border-bottom: 1px solid #e6e6e6;
+}
+.cs-program-nav ul {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 1.5rem 0;
+  overflow-x: auto;
+}
+.cs-program-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #666666;
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+}
+.cs-program-link:hover {
+  color: #0a0a0a;
+}
+.cs-program-link--active {
+  color: #ff4f0a;
+  font-weight: 700;
+  border-bottom-color: #ff4f0a;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  color: #111827;
+  background: #ffffff;
+  font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans KR", sans-serif;
+}
+
+.cs-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+/* ── 설명 ───────────────────────────────────────────────────── */
+.cs-tool-desc {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #666666;
+}
+
+/* ── 마켓플레이스 그룹 (테두리 박스) ───────────────────────────── */
+.cs-group {
+  --accent: #666666;
+  border: 2px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  border-radius: 12px;
+  padding: 0.85rem 1.25rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.cs-group__header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  margin: 0.35rem 0 1.5rem 0;
+}
+.cs-group__header img {
+  display: block;
+  width: 32px;
+  height: auto;
+}
+.cs-group__header span {
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* ── 택배사 카드 ────────────────────────────────────────────── */
+.cs-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+
+.cs-card {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cs-card__logo-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0.35rem 0;
+}
+.cs-card__logo-label img {
+  display: block;
+  width: 32px;
+  height: auto;
+}
+.cs-card__logo-label span {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cs-card__status {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #666666;
+}
+
+.cs-card__button {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #d0d5dd;
+  background: #ffffff;
+  color: #111827;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.cs-card__button:hover {
+  border-color: var(--accent, #666666);
+}
+.cs-card__button.is-selected {
+  background: var(--accent, #666666);
+  border-color: var(--accent, #666666);
+  color: #ffffff;
+}
+
+/* ── 변환 도구 패널 ─────────────────────────────────────────── */
+.cs-tool {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e5e5e5;
+}
+
+.cs-tool h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.cs-upload-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.cs-hint-text,
+.cs-download-wrap {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+  .cs-upload-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cs-field label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.cs-field__hint {
+  margin: 0.3rem 0 0;
+  font-size: 0.8rem;
+  color: #666666;
+}
+
+.cs-dropzone {
+  --accent: #666666;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  border: 2px dashed color-mix(in srgb, var(--accent) 50%, transparent);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}
+
+.cs-dropzone input[type="file"] {
+  display: none;
+}
+
+.cs-dropzone__button {
+  flex: none;
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.4rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.cs-dropzone__filename {
+  width: 100%;
+  font-size: 0.85rem;
+  color: #333333;
+  overflow-wrap: anywhere;
+}
+
+.cs-hint-text {
+  font-size: 0.85rem;
+  color: #666666;
+  padding-top: 0.5rem;
+}
+
+/* ── 비밀번호 입력 (네이버 파일 전용) ──────────────────────────── */
+.cs-password-field {
+  margin-top: 1rem;
+  max-width: 320px;
+}
+
+.cs-password-field label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.cs-password-field input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #d0d5dd;
+  font-size: 0.9rem;
+}
+
+.cs-password-field input:focus {
+  outline: 2px solid var(--accent, #666666);
+  outline-offset: 1px;
+}
+
+.cs-download-btn {
+  margin-top: 0.5rem;
+  width: 100%;
+  height: 96px;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #ffffff;
+  background: var(--accent, #666666);
+  border: none;
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+}
+
+/* ── 상태 메시지 박스 ───────────────────────────────────────── */
+.cs-status {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.cs-status--progress {
+  background: #f3f4f6;
+  color: #374151;
+}
+.cs-status--success {
+  background: #ecfdf5;
+  color: #065f46;
+}
+.cs-status--error {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.cs-unmatched-list {
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+  font-size: 0.85rem;
+}
+
+.cs-tool-footnote {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: #666666;
+}
+
+.cs-coming-soon {
+  padding: 1.5rem;
+  background: #fffbeb;
+  color: #92400e;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.cs-coming-soon__link {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-weight: 700;
+  color: #92400e;
+  text-decoration: underline;
+}
+
+/* ── 판매가 계산기 ─────────────────────────────────────────────── */
+.cs-calc-modes {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0 1.25rem;
+}
+.cs-calc-modes button {
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid #d0d5dd;
+  background: #ffffff;
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.cs-calc-modes button.is-active {
+  background: #ff4f0a;
+  border-color: #ff4f0a;
+  color: #ffffff;
+}
+
+.cs-calc-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+@media (max-width: 760px) {
+  .cs-calc-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cs-calc-panel {
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem 1.25rem;
+}
+.cs-calc-panel h2 {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.cs-calc-field {
+  margin-bottom: 0.9rem;
+}
+.cs-calc-input {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.cs-calc-input input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid #d0d5dd;
+  font-size: 0.95rem;
+}
+.cs-calc-input input:focus {
+  outline: 2px solid #ff4f0a;
+  outline-offset: 1px;
+}
+.cs-calc-input span {
+  font-size: 0.85rem;
+  color: #666666;
+}
+.cs-calc-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.cs-calc-check {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: -0.4rem 0 0.9rem;
+  font-size: 0.85rem;
+  color: #374151;
+}
+.cs-calc-sep {
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin: 1.1rem 0;
+}
+.cs-calc-radios {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.cs-calc-radios label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.cs-calc-hero {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.cs-calc-hero > div {
+  background: #fff7f3;
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem;
+}
+.cs-calc-hero__label {
+  display: block;
+  font-size: 0.8rem;
+  color: #666666;
+  margin-bottom: 0.2rem;
+}
+.cs-calc-hero strong {
+  font-size: 1.3rem;
+  color: #ff4f0a;
+}
+.cs-calc-hero strong.is-negative,
+.cs-calc-table td.is-negative {
+  color: #dc2626;
+}
+
+.cs-calc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.cs-calc-table th,
+.cs-calc-table td {
+  padding: 0.5rem 0.25rem;
+  border-bottom: 1px solid #f0f0f0;
+  text-align: left;
+  font-weight: 400;
+}
+.cs-calc-table td {
+  text-align: right;
+  white-space: nowrap;
+}
+.cs-calc-table th small {
+  display: block;
+  font-size: 0.75rem;
+  color: #888888;
+}
+.cs-calc-table .is-sub th,
+.cs-calc-table .is-sub td {
+  font-weight: 600;
+}
+.cs-calc-table .is-total th,
+.cs-calc-table .is-total td {
+  font-weight: 700;
+  border-top: 2px solid #111827;
+  border-bottom: none;
+}
+
+.cs-calc-compare {
+  margin-top: 1.25rem;
+}
+.cs-calc-table--compare thead th {
+  font-size: 0.8rem;
+  color: #666666;
+  border-bottom: 1px solid #e5e5e5;
+}
+.cs-calc-table--compare thead th:not(:first-child),
+.cs-calc-table--compare td {
+  text-align: right;
+}
+.cs-calc-table--compare tbody tr {
+  cursor: pointer;
+}
+.cs-calc-table--compare tbody tr:hover {
+  background: #fafafa;
+}
+.cs-calc-table--compare tbody tr.is-picked {
+  background: #fff7f3;
+  font-weight: 700;
+}
