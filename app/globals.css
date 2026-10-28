@@ -534,7 +534,7 @@ body {
   font-size: 0.95rem;
 }
 .cs-calc-input input:focus {
-  outline: 2px solid #ff4f0a;
+  outline: 2px solid #2563eb;
   outline-offset: 1px;
 }
 .cs-calc-input span {
@@ -592,7 +592,7 @@ body {
 }
 .cs-calc-hero strong {
   font-size: 1.3rem;
-  color: #ff4f0a;
+  color: #2563eb;
 }
 .cs-calc-hero strong.is-negative,
 .cs-calc-table td.is-negative {
