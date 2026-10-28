@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import SiteHeader from "./components/SiteHeader";
 
 export const metadata: Metadata = {
   title: "마진/정산 계산기 | Codivo Studio",
@@ -15,25 +16,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <nav className="cs-program-nav" aria-label="Seller Tools 프로그램">
-          <ul>
-            <li>
-              <a className="cs-program-link" href="/tools/all-tools/">
-                전체도구
-              </a>
-            </li>
-            <li>
-              <a className="cs-program-link" href="/tools/excel-converter/">
-                엑셀변환기
-              </a>
-            </li>
-            <li>
-              <a className="cs-program-link cs-program-link--active" href="/tools/margin-calculator/" aria-current="page">
-                마진계산기
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <SiteHeader />
         {children}
       </body>
     </html>
